@@ -1,0 +1,148 @@
+:root {
+  --bg: #faf8f4;
+  --surface: #ffffff;
+  --text: #1d2433;
+  --text-muted: #6b7280;
+  --border: #e5e1d8;
+  --accent: #1f2a44;
+  --highlight: #e05a5a;
+  --tab-height: 56px;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141a2a;
+    --surface: #1d2537;
+    --text: #e8eaf0;
+    --text-muted: #98a0b3;
+    --border: #2c3550;
+    --accent: #c3cdea;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: calc(var(--tab-height) + env(safe-area-inset-bottom) + 24px);
+}
+
+h1 {
+  font-size: 1.4rem;
+  margin: 8px 0 16px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* --- bottom tab bar --- */
+.tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 10;
+}
+
+.tabbar a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 0 6px;
+  min-height: var(--tab-height);
+  font-size: 0.65rem;
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.tabbar a[aria-current="page"] {
+  color: var(--highlight);
+}
+
+.tabbar svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* --- login --- */
+.login {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.login input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.login button {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login .error {
+  color: var(--highlight);
+  font-size: 0.85rem;
+}
+
+/* --- full-screen splash while auth state resolves --- */
+.splash {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
