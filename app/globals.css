@@ -138,6 +138,231 @@ textarea {
   font-size: 0.85rem;
 }
 
+/* --- shared field components --- */
+.field {
+  margin: 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field > label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.textfield {
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  width: 100%;
+}
+
+textarea.textfield {
+  resize: vertical;
+}
+
+.btn {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn.secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+}
+
+/* segmented status control */
+.segmented {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.segmented button {
+  flex: 1;
+  padding: 9px 4px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid var(--border);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.segmented button:first-child {
+  border-left: none;
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* star rating */
+.stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.star {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  font-size: 26px;
+  line-height: 30px;
+  text-align: center;
+}
+
+.star-bg {
+  color: var(--border);
+}
+
+.star-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--highlight);
+}
+
+.star-half {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.star-half.left {
+  left: 0;
+}
+
+.star-half.right {
+  right: 0;
+}
+
+.stars-value {
+  margin-left: 8px;
+  font-size: 0.85rem;
+}
+
+/* people chips + suggestions */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.chip button,
+.chip-remove {
+  border: none;
+  background: none;
+  padding: 0 2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.suggestions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.suggestions li + li {
+  border-top: 1px solid var(--border);
+}
+
+.suggestions button {
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* date list */
+.datelist {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+.daterow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.daterow input[type="date"] {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+/* --- home header + settings --- */
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-link {
+  color: var(--text-muted);
+  display: flex;
+}
+
+.settings-section {
+  margin: 24px 0;
+}
+
+.settings-section h2 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
 /* --- full-screen splash while auth state resolves --- */
 .splash {
   min-height: 100dvh;
