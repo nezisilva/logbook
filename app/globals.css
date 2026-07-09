@@ -593,6 +593,37 @@ input[type="file"] {
   margin: 12px 0;
 }
 
+/* --- tv & movies --- */
+.chip-on {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+button.chip {
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.leaderboard {
+  margin: 8px 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.attribution {
+  font-size: 0.7rem;
+  margin-top: 24px;
+}
+
 /* --- home header + settings --- */
 .home-header {
   display: flex;
