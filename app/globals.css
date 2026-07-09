@@ -335,6 +335,165 @@ textarea.textfield {
   background: var(--surface);
 }
 
+/* --- travel: world map + stats --- */
+.world-map {
+  width: 100%;
+  height: auto;
+  margin: 4px 0 12px;
+}
+
+.world-map .country {
+  fill: var(--border);
+  stroke: var(--bg);
+  stroke-width: 0.5;
+  cursor: pointer;
+}
+
+.world-map .country.visited {
+  fill: var(--highlight);
+}
+
+.world-map .country.marker {
+  stroke: var(--text-muted);
+  stroke-width: 0.8;
+}
+
+.statgrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat strong {
+  font-size: 1.15rem;
+}
+
+.stat span {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.contbars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 12px 0 20px;
+}
+
+.contbar {
+  display: grid;
+  grid-template-columns: 8em 1fr 3.5em;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+}
+
+.contbar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.contbar-fill {
+  display: block;
+  height: 100%;
+  background: var(--highlight);
+}
+
+.contbar-count {
+  text-align: right;
+  font-size: 0.75rem;
+}
+
+/* --- shared list/detail bits --- */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0 8px;
+}
+
+.section-head h1,
+.section-head h2 {
+  margin: 0;
+}
+
+h2 {
+  font-size: 1.05rem;
+  margin: 20px 0 8px;
+}
+
+.itemlist {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemlist a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--text);
+}
+
+.itemlist .muted {
+  font-size: 0.8rem;
+}
+
+.backlink {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.badge {
+  background: var(--highlight);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.rowform {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.error-text {
+  color: var(--highlight);
+  font-size: 0.85rem;
+}
+
+a.btn {
+  text-decoration: none;
+  display: inline-block;
+}
+
 /* --- home header + settings --- */
 .home-header {
   display: flex;

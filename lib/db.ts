@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import type { Area, Entry, ExportPayload, Person } from "./types";
+import type { Area, Entry, EntryDate, ExportPayload, Person, Place } from "./types";
 
 export const isConfigured = supabase !== null;
 
@@ -88,6 +88,123 @@ export async function setEntryDates(
     .from("entry_dates")
     .insert(dates.map((d) => ({ entry_id: entryId, ...d })));
   if (ins.error) throw ins.error;
+}
+
+// ---------- places ----------
+
+export async function getCountryPlace(code: string): Promise<Place | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("places")
+    .select("*")
+    .eq("kind", "country")
+    .eq("country_code", code)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+/** Finds or creates the places row for a country (rows are created lazily). */
+export async function ensureCountryPlace(code: string, name: string): Promise<Place> {
+  const existing = await getCountryPlace(code);
+  if (existing) return existing;
+  const { data, error } = await db()
+    .from("places")
+    .insert({ kind: "country", name, country_code: code })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function listCities(countryCode: string): Promise<Place[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from("places")
+    .select("*")
+    .eq("kind", "city")
+    .eq("country_code", countryCode)
+    .order("name");
+  if (error) throw error;
+  return data;
+}
+
+export async function createCity(name: string, countryPlace: Place): Promise<Place> {
+  const { data, error } = await db()
+    .from("places")
+    .insert({
+      kind: "city",
+      name,
+      country_code: countryPlace.country_code,
+      parent_id: countryPlace.id,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deletePlace(id: string): Promise<void> {
+  const { error } = await db().from("places").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function updatePlaceDetails(
+  id: string,
+  details: Record<string, unknown>
+): Promise<Place> {
+  const { data, error } = await db()
+    .from("places")
+    .update({ details })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function setEntryPlaces(entryId: string, placeIds: string[]): Promise<void> {
+  const client = db();
+  const del = await client.from("entry_places").delete().eq("entry_id", entryId);
+  if (del.error) throw del.error;
+  if (placeIds.length === 0) return;
+  const ins = await client
+    .from("entry_places")
+    .insert(placeIds.map((place_id) => ({ entry_id: entryId, place_id })));
+  if (ins.error) throw ins.error;
+}
+
+// ---------- trips (entries + all links in one query) ----------
+
+export interface TripFull extends Entry {
+  entry_places: { place_id: string; places: Place }[];
+  entry_dates: EntryDate[];
+  entry_people: { person_id: string; role: string; people: Person }[];
+}
+
+const TRIP_SELECT =
+  "*, entry_places(place_id, places(*)), entry_dates(*), entry_people(person_id, role, people(*))";
+
+export async function listTrips(): Promise<TripFull[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from("entries")
+    .select(TRIP_SELECT)
+    .eq("area", "trip")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data as unknown as TripFull[];
+}
+
+export async function getTrip(id: string): Promise<TripFull | null> {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from("entries")
+    .select(TRIP_SELECT)
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data as unknown as TripFull | null;
 }
 
 // ---------- export / import ----------

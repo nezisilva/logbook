@@ -15,6 +15,8 @@ export interface Place {
   name: string;
   country_code: string | null;
   parent_id: string | null;
+  /** free-form cache (e.g. best_time text on countries) — requires migration 0002 */
+  details: Record<string, unknown>;
   created_at: string;
 }
 
