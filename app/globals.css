@@ -629,6 +629,49 @@ button.chip {
   border-style: dashed;
 }
 
+/* --- home dashboard --- */
+.quickadds {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.quickadd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 4px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+.quickadd span {
+  font-size: 1.3rem;
+}
+
+a.stat {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.recentrow {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 12px;
+  align-items: center;
+}
+
+.recent-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
 /* --- home header + settings --- */
 .home-header {
   display: flex;

@@ -1,6 +1,38 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { isConfigured } from "@/lib/db";
+import {
+  AREA_META,
+  recentActivity,
+  yearInReview,
+  type RecentItem,
+  type YearInReview,
+} from "@/lib/dashboard";
+
+const QUICK_ADDS = [
+  { href: "/travel/trip/new", icon: "🌍", label: "Trip" },
+  { href: "/books/new", icon: "📖", label: "Book" },
+  { href: "/tv/new", icon: "🎬", label: "Watch" },
+  { href: "/concerts/new", icon: "🎸", label: "Concert" },
+];
 
 export default function Home() {
+  const [review, setReview] = useState<YearInReview | null>(null);
+  const [recent, setRecent] = useState<RecentItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    Promise.all([yearInReview(), recentActivity()])
+      .then(([yr, items]) => {
+        setReview(yr);
+        setRecent(items);
+      })
+      .catch(() => {})
+      .finally(() => setLoaded(true));
+  }, []);
+
   return (
     <>
       <div className="home-header">
@@ -12,10 +44,64 @@ export default function Home() {
           </svg>
         </Link>
       </div>
-      <p className="muted">
-        Your dashboard — recent activity, year in review, and quick-add — arrives
-        once the trackers below have data. Use the tabs to explore.
-      </p>
+
+      <div className="quickadds">
+        {QUICK_ADDS.map((q) => (
+          <Link key={q.href} href={q.href} className="quickadd">
+            <span aria-hidden="true">{q.icon}</span>+ {q.label}
+          </Link>
+        ))}
+      </div>
+
+      {review && (
+        <>
+          <h2>{review.year} so far</h2>
+          <div className="statgrid">
+            <Link href="/travel" className="stat">
+              <strong>{review.countries}</strong>
+              <span>countries</span>
+            </Link>
+            <Link href="/books" className="stat">
+              <strong>{review.books}</strong>
+              <span>books read</span>
+            </Link>
+            <Link href="/tv" className="stat">
+              <strong>{review.movies}</strong>
+              <span>movies</span>
+            </Link>
+            <Link href="/concerts" className="stat">
+              <strong>{review.concerts}</strong>
+              <span>concerts</span>
+            </Link>
+          </div>
+        </>
+      )}
+
+      <h2>Recent</h2>
+      {!isConfigured && <p className="muted">The dashboard fills in once Supabase is configured.</p>}
+      {isConfigured && loaded && recent.length === 0 && (
+        <p className="muted">Nothing logged yet — use the buttons above to add your first entry.</p>
+      )}
+      <ul className="itemlist">
+        {recent.map((item) => {
+          const meta = AREA_META[item.area];
+          return (
+            <li key={item.id}>
+              <Link href={meta.href(item)} className="recentrow">
+                <span className="recent-icon" aria-hidden="true">
+                  {meta.icon}
+                </span>
+                <span className="bookrow-main">
+                  <strong>{item.title}</strong>
+                  <span className="muted">
+                    {meta.label} · {item.status} · {item.updated_at.slice(0, 10)}
+                  </span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 }
